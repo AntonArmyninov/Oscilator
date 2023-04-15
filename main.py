@@ -14,8 +14,15 @@ def n(k):
     length = k.shape[0]  # длина массива k
     u, o = 0, 0.05
     noise = np.random.normal(u, o, size=length)
-
     return noise
+#Вычислить для сигналов f(k) и d(k) значения SNR и CV
+
+def signalnoise(a, axis=0, ddof=0):
+    a = np.asanyarray(a)
+    m = a.mean(axis)
+    sd = a.std(axis=axis, ddof=ddof)
+
+    return np.where(sd == 0, 0, m/sd)
 
 #создание массива k, который начинается с -1 и заканчивается на 1, включая 100 равных промежутков
 k = np.linspace(-1, 1, 100)
@@ -35,5 +42,7 @@ ax.set_xlabel('k') # добавление подписи для оси x
 ax.set_ylabel('v') # добавление подписи для оси y
 ax.set_title('Константа шум s(k)') # добавление заголовка графика
 ax.legend();
+print(signalnoise(F, axis=0,ddof=0))
+print(signalnoise(D, axis=0,ddof=0))
 
 plt.show()
