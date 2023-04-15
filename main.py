@@ -17,12 +17,16 @@ def n(k):
     return noise
 #Вычислить для сигналов f(k) и d(k) значения SNR и CV
 
-def signalnoise(a, axis=0, ddof=0):
-    a = np.asanyarray(a)
-    m = a.mean(axis)
-    sd = a.std(axis=axis, ddof=ddof)
+def signaltonoise(a, ddof=0):
+    u = a.mean()
+    o = a.std(ddof=ddof)
 
-    return np.where(sd == 0, 0, m/sd)
+    return u/o
+def coefficient_variation(a, ddof=0):
+    u = a.mean()
+    o = a.std(ddof=ddof)
+
+    return o/u * 100
 
 #создание массива k, который начинается с -1 и заканчивается на 1, включая 100 равных промежутков
 k = np.linspace(-1, 1, 100)
@@ -42,7 +46,8 @@ ax.set_xlabel('k') # добавление подписи для оси x
 ax.set_ylabel('v') # добавление подписи для оси y
 ax.set_title('Константа шум s(k)') # добавление заголовка графика
 ax.legend();
-print(signalnoise(F, axis=0,ddof=0))
-print(signalnoise(D, axis=0,ddof=0))
-
+print(signaltonoise(D))
+print(signaltonoise(F))
+print(coefficient_variation(D))
+print(coefficient_variation(F))
 plt.show()
